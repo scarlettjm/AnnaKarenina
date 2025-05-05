@@ -1,0 +1,1441 @@
+---
+title: "anna"
+output: html_document
+date: "2024-02-27"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+```{r}
+# Load required packages
+library(tidyverse)
+library(tidytext)
+
+# Load "Anna Karenina"
+anna_karenina <- readLines("/Users/ScarlettMoldovan3/Desktop/anna.karenina.txt")
+
+# Convert to a dataframe
+anna_karenina_df <- tibble(text = anna_karenina)
+
+# Tokenize the text into words
+words <- anna_karenina_df %>%
+  unnest_tokens(word, text)
+
+# Load lists of character names, colors, events, and sounds (you may need to create these lists or find them online)
+character_names <- c("Anna", "Vronsky", "Kitty", "Levin", "Alexei", "Stiva", "Dolly") # Add more character names as needed
+colors <- c("red", "blue", "green", "yellow", "white", "black") # Add more colors as needed
+events <- c("ball", "marriage", "death", "birth", "affair") # Add more events as needed
+sounds <- c("scream", "laugh", "whisper", "thunder", "rain") # Add more sounds as needed
+
+# Find occurrences of character names
+character_mentions <- words %>%
+  filter(word %in% character_names)
+
+# Find occurrences of colors
+color_mentions <- words %>%
+  filter(word %in% colors)
+
+# Find occurrences of events
+event_mentions <- words %>%
+  filter(word %in% events)
+
+# Find occurrences of sounds
+sound_mentions <- words %>%
+  filter(word %in% sounds)
+
+# Perform sentiment analysis to find emotion words
+emotion_words <- words %>%
+  inner_join(get_sentiments("afinn"), by = "word") %>%
+  distinct(word, .keep_all = TRUE)
+
+# Print results
+cat("Character Mentions:\n")
+print(character_mentions)
+cat("\nColor Mentions:\n")
+print(color_mentions)
+cat("\nEvent Mentions:\n")
+print(event_mentions)
+cat("\nSound Mentions:\n")
+print(sound_mentions)
+cat("\nEmotion Words:\n")
+print(emotion_words)
+```
+```{r}
+# Load required packages
+library(tidyverse)
+library(tidytext)
+library(wordcloud)
+library(RColorBrewer)
+
+# Load "Anna Karenina"
+anna_karenina <- readLines("/Users/ScarlettMoldovan3/Desktop/anna.karenina.txt")
+
+# Convert to a dataframe
+anna_karenina_df <- tibble(text = anna_karenina)
+
+# Tokenize the text into words
+words <- anna_karenina_df %>%
+  unnest_tokens(word, text)
+
+# Load lists of character names, colors, events, and sounds (you may need to create these lists or find them online)
+character_names <- c("Anna", "Vronsky", "Kitty", "Levin", "Karenin") # Add more character names as needed
+colors <- c("red", "blue", "green", "yellow", "white", "black") # Add more colors as needed
+events <- c("ball", "marriage", "death", "birth", "affair") # Add more events as needed
+sounds <- c("scream", "laugh", "whisper", "thunder", "rain") # Add more sounds as needed
+
+# Load required packages
+library(tidyverse)
+library(tidytext)
+library(wordcloud)
+library(RColorBrewer)
+
+# Load "Anna Karenina"
+anna_karenina <- readLines("/Users/ScarlettMoldovan3/Desktop/anna.karenina.txt")
+
+# Convert to a dataframe
+anna_karenina_df <- tibble(text = anna_karenina)
+
+# Tokenize the text into words
+words <- anna_karenina_df %>%
+  unnest_tokens(word, text)
+
+# List of food items (you may need to create or update this list)
+foods <- c("bread", "meat", "potato", "soup", "fish")
+
+# Find occurrences of food
+food_mentions <- words %>%
+  filter(word %in% foods) %>%
+  count(word) %>%
+  arrange(desc(n))
+
+# Visualize food mentions
+# Bar plot for food mentions if there are mentions
+if (nrow(food_mentions) > 0) {
+  barplot(food_mentions$n, names.arg = food_mentions$word, main = "Food Mentions", 
+          xlab = "Food", ylab = "Frequency", las = 2, col = "lightgreen", horiz = TRUE)
+} else {
+  cat("No food mentions found in the text.")
+}
+
+
+# List of settings (you may need to create or update this list)
+settings <- c("Moscow", "St. Petersburg", "country estate", "train station", "theater")
+
+# Find occurrences of character names
+character_mentions <- words %>%
+  filter(word %in% character_names) %>%
+  count(word) %>%
+  arrange(desc(n))
+
+# Find occurrences of colors
+color_mentions <- words %>%
+  filter(word %in% colors) %>%
+  count(word) %>%
+  arrange(desc(n))
+
+# Find occurrences of events
+event_mentions <- words %>%
+  filter(word %in% events) %>%
+  count(word) %>%
+  arrange(desc(n))
+
+# Find occurrences of sounds
+sound_mentions <- words %>%
+  filter(word %in% sounds) %>%
+  count(word) %>%
+  arrange(desc(n))
+
+# Find occurrences of settings
+setting_mentions <- words %>%
+  filter(word %in% settings) %>%
+  count(word) %>%
+  arrange(desc(n))
+
+# Perform sentiment analysis to find emotion words
+emotion_words <- words %>%
+  inner_join(get_sentiments("afinn"), by = "word") %>%
+  count(word) %>%
+  arrange(desc(n))
+
+# Visualize each category
+
+# Bar plot for colors
+barplot(color_mentions$n, names.arg = color_mentions$word, main = "Color Mentions", 
+        xlab = "Color", ylab = "Frequency", las = 2, col = "lightgreen", horiz = TRUE)
+
+# Bar plot for events
+barplot(event_mentions$n, names.arg = event_mentions$word, main = "Event Mentions", 
+        xlab = "Event", ylab = "Frequency", las = 2, col = "salmon", horiz = TRUE)
+
+# Bar plot for sounds
+barplot(sound_mentions$n, names.arg = sound_mentions$word, main = "Sound Mentions", 
+        xlab = "Sound", ylab = "Frequency", las = 2, col = "lightpink", horiz = TRUE)
+
+# Bar plot for settings
+barplot(setting_mentions$n, names.arg = setting_mentions$word, main = "Setting Mentions", 
+        xlab = "Setting", ylab = "Frequency", las = 2, col = "lightblue", horiz = TRUE)
+
+# Word cloud for emotion words
+wordcloud(emotion_words$word, emotion_words$n, scale = c(4, 0.5), min.freq = 2,
+          random.order = FALSE, rot.per = 0.35, colors = brewer.pal(8, "Dark2"))
+```
+```{r}
+# Load required packages
+library(tidyverse)
+library(tidytext)
+library(wordcloud)
+library(RColorBrewer)
+
+# Load "Anna Karenina"
+anna_karenina <- readLines("/Users/ScarlettMoldovan3/Desktop/anna.karenina.txt")
+
+# Remove any incomplete final line
+anna_karenina <- anna_karenina[-length(anna_karenina)]
+
+# Convert to a dataframe
+anna_karenina_df <- tibble(text = anna_karenina)
+
+# Tokenize the text into words
+words <- anna_karenina_df %>%
+  unnest_tokens(word, text)
+
+# List of food items (you may need to create or update this list)
+foods <- c("bread", "meat", "potato", "soup", "fish")
+
+# Find occurrences of food
+food_mentions <- words %>%
+  filter(word %in% foods) %>%
+  count(word) %>%
+  arrange(desc(n))
+
+# Visualize food mentions
+# Bar plot for food mentions if there are mentions
+if (nrow(food_mentions) > 0) {
+  barplot(food_mentions$n, names.arg = food_mentions$word, main = "Food Mentions", 
+          xlab = "Food", ylab = "Frequency", las = 2, col = "lightgreen", horiz = TRUE)
+} else {
+  cat("No food mentions found in the text.")
+}
+
+# List of animals (you may need to create or update this list)
+animals <- c("horse", "dog", "cat", "cow", "sheep")
+
+# Find occurrences of animals
+animal_mentions <- words %>%
+  filter(word %in% animals) %>%
+  count(word) %>%
+  arrange(desc(n))
+
+# Visualize animal mentions
+# Bar plot for animal mentions if there are mentions
+if (nrow(animal_mentions) > 0) {
+  barplot(animal_mentions$n, names.arg = animal_mentions$word, main = "Animal Mentions", 
+          xlab = "Animal", ylab = "Frequency", las = 2, col = "lightblue", horiz = TRUE)
+} else {
+  cat("No animal mentions found in the text.")
+}
+```
+```{r}
+# Load required packages
+library(tidyverse)
+library(tidytext)
+
+# Load "Anna Karenina"
+anna_karenina <- readLines("/Users/ScarlettMoldovan3/Desktop/anna.karenina.txt")
+
+# Remove any incomplete final line
+anna_karenina <- anna_karenina[-length(anna_karenina)]
+
+# Convert to a dataframe
+anna_karenina_df <- tibble(text = anna_karenina)
+
+# Tokenize the text into words
+words <- anna_karenina_df %>%
+  unnest_tokens(word, text)
+
+# List of character names
+characters <- c("Anna", "Vronsky", "Kitty", "Levin", "Karenin")
+
+# List of food items
+foods <- c("bread", "meat", "potato", "soup", "fish")
+
+# List of animals
+animals <- c("horse", "dog", "cat", "cow", "sheep")
+
+# List of colors
+colors <- c("red", "blue", "green", "yellow", "white", "black")
+
+# List of events
+events <- c("ball", "marriage", "death", "birth", "affair")
+
+# List of sounds
+sounds <- c("scream", "laugh", "whisper", "thunder", "rain")
+
+# Perform sentiment analysis to find emotion words
+emotion_words <- words %>%
+  inner_join(get_sentiments("afinn"), by = "word") %>%
+  distinct(word, .keep_all = TRUE)
+
+# Count occurrences of each keyword
+keyword_counts <- tibble(
+  Characters = sum(words$word %in% characters),
+  Food = sum(words$word %in% foods),
+  Animals = sum(words$word %in% animals),
+  Colors = sum(words$word %in% colors),
+  Events = sum(words$word %in% events),
+  Sounds = sum(words$word %in% sounds),
+  Emotion_Words = nrow(emotion_words)
+)
+
+# Print the counts
+print(keyword_counts)
+```
+```{r}
+# Load required packages
+library(tidyverse)
+library(tidytext)
+
+# Load "Anna Karenina"
+anna_karenina <- readLines("/Users/ScarlettMoldovan3/Desktop/anna.karenina.txt")
+
+# Remove any incomplete final line
+anna_karenina <- anna_karenina[-length(anna_karenina)]
+
+# Convert to a dataframe
+anna_karenina_df <- tibble(text = anna_karenina)
+
+# Tokenize the text into words
+words <- anna_karenina_df %>%
+  unnest_tokens(word, text)
+
+# List of character names
+characters <- c("Anna", "Vronsky", "Kitty", "Levin", "Karenin")
+
+# List of food items
+foods <- c("bread", "meat", "potato", "soup", "fish")
+
+# List of animals
+animals <- c("horse", "dog", "cat", "cow", "sheep")
+
+# List of colors
+colors <- c("red", "blue", "green", "yellow", "white", "black")
+
+# List of events
+events <- c("ball", "marriage", "death", "birth", "affair")
+
+# List of sounds
+sounds <- c("scream", "laugh", "whisper", "thunder", "rain")
+
+# Perform sentiment analysis to find emotion words
+emotion_words <- words %>%
+  inner_join(get_sentiments("afinn"), by = "word") %>%
+  distinct(word, .keep_all = TRUE)
+
+# Count occurrences of each keyword in each category
+keyword_counts <- tibble(
+  Keyword = c("Characters", "Food", "Animals", "Colors", "Events", "Sounds", "Emotion Words"),
+  Anna = c(sum(words$word %in% characters),
+           sum(words$word %in% foods),
+           sum(words$word %in% animals),
+           sum(words$word %in% colors),
+           sum(words$word %in% events),
+           sum(words$word %in% sounds),
+           nrow(emotion_words)),
+  # You can add more columns for other characters if needed
+  # Character_2 = c(...),
+  # Character_3 = c(...),
+  # ...
+)
+
+# Print the counts
+print(keyword_counts)
+```
+```{r}
+# Load required packages
+library(tidyverse)
+library(tidytext)
+
+# Load "Anna Karenina"
+anna_karenina <- readLines("/Users/ScarlettMoldovan3/Desktop/anna.karenina.txt")
+
+# Remove any incomplete final line
+anna_karenina <- anna_karenina[-length(anna_karenina)]
+
+# Convert to a dataframe
+anna_karenina_df <- tibble(text = anna_karenina)
+
+# Tokenize the text into words
+words <- anna_karenina_df %>%
+  unnest_tokens(word, text)
+
+# Perform sentiment analysis to find emotion words
+emotion_words <- words %>%
+  inner_join(get_sentiments("afinn"), by = "word") %>%
+  distinct(word, .keep_all = TRUE)
+
+# Create a spreadsheet for emotions
+emotions_spreadsheet <- emotion_words %>%
+  select(word, value) %>%
+  arrange(desc(value))
+
+# Write the spreadsheet to a CSV file
+write_csv(emotions_spreadsheet, "/Users/ScarlettMoldovan3/Desktop/emotions_spreadsheet.csv")
+```
+```{r}
+# Load required packages
+library(tidyverse)
+library(tidytext)
+library(writexl)
+
+# Load "Anna Karenina"
+anna_karenina <- readLines("/Users/ScarlettMoldovan3/Desktop/anna.karenina.txt")
+
+# Remove any incomplete final line
+anna_karenina <- anna_karenina[-length(anna_karenina)]
+
+# Convert to a dataframe
+anna_karenina_df <- tibble(text = anna_karenina)
+
+# Tokenize the text into words
+words <- anna_karenina_df %>%
+  unnest_tokens(word, text)
+
+# List of food items
+foods <- c("bread", "meat", "potato", "soup", "fish")
+
+# Find occurrences of food
+food_mentions <- words %>%
+  filter(word %in% foods) %>%
+  count(word) %>%
+  arrange(desc(n))
+
+# List of animals
+animals <- c("horse", "dog", "cat", "cow", "sheep")
+
+# Find occurrences of animals
+animal_mentions <- words %>%
+  filter(word %in% animals) %>%
+  count(word) %>%
+  arrange(desc(n))
+
+# List of colors
+colors <- c("red", "blue", "green", "yellow", "white", "black")
+
+# Find occurrences of colors
+color_mentions <- words %>%
+  filter(word %in% colors) %>%
+  count(word) %>%
+  arrange(desc(n))
+
+# List of events
+events <- c("ball", "marriage", "death", "birth", "affair")
+
+# Find occurrences of events
+event_mentions <- words %>%
+  filter(word %in% events) %>%
+  count(word) %>%
+  arrange(desc(n))
+
+# List of sounds
+sounds <- c("scream", "laugh", "whisper", "thunder", "rain")
+
+# Find occurrences of sounds
+sound_mentions <- words %>%
+  filter(word %in% sounds) %>%
+  count(word) %>%
+  arrange(desc(n))
+
+# Perform sentiment analysis to find emotion words
+emotion_words <- words %>%
+  inner_join(get_sentiments("afinn"), by = "word") %>%
+  distinct(word, .keep_all = TRUE)
+
+# Create dataframes for each category
+food_df <- as.data.frame(food_mentions)
+animals_df <- as.data.frame(animal_mentions)
+colors_df <- as.data.frame(color_mentions)
+events_df <- as.data.frame(event_mentions)
+sounds_df <- as.data.frame(sound_mentions)
+emotions_df <- as.data.frame(emotion_words)
+
+# Write dataframes to Excel files
+write_xlsx(list("Food" = food_df, 
+                "Animals" = animals_df, 
+                "Colors" = colors_df, 
+                "Events" = events_df, 
+                "Sounds" = sounds_df,
+                "Emotions" = emotions_df),
+           path = "/Users/ScarlettMoldovan3/Desktop/anna_karenina_analysis.xlsx")
+```
+```{R}
+install.packages("openxlsx")
+library(openxlsx)
+```
+```{r}
+# Load required packages
+library(tidyverse)
+library(tidytext)
+library(openxlsx)
+
+# Load "Anna Karenina"
+anna_karenina <- readLines("/Users/ScarlettMoldovan3/Desktop/anna.karenina.txt")
+
+# Remove any incomplete final line
+anna_karenina <- anna_karenina[-length(anna_karenina)]
+
+# Convert to a dataframe
+anna_karenina_df <- tibble(text = anna_karenina)
+
+# Tokenize the text into words
+words <- anna_karenina_df %>%
+  unnest_tokens(word, text)
+
+# List of food items
+foods <- c("bread", "meat", "potato", "soup", "fish")
+
+# Find occurrences of food
+food_mentions <- words %>%
+  filter(word %in% foods) %>%
+  count(word) %>%
+  arrange(desc(n))
+
+# List of animals
+animals <- c("horse", "dog", "cat", "cow", "sheep")
+
+# Find occurrences of animals
+animal_mentions <- words %>%
+  filter(word %in% animals) %>%
+  count(word) %>%
+  arrange(desc(n))
+
+# List of colors
+colors <- c("red", "blue", "green", "yellow", "white", "black")
+
+# Find occurrences of colors
+color_mentions <- words %>%
+  filter(word %in% colors) %>%
+  count(word) %>%
+  arrange(desc(n))
+
+# List of events
+events <- c("ball", "marriage", "death", "birth", "affair")
+
+# Find occurrences of events
+event_mentions <- words %>%
+  filter(word %in% events) %>%
+  count(word) %>%
+  arrange(desc(n))
+
+# List of sounds
+sounds <- c("scream", "laugh", "whisper", "thunder", "rain")
+
+# Find occurrences of sounds
+sound_mentions <- words %>%
+  filter(word %in% sounds) %>%
+  count(word) %>%
+  arrange(desc(n))
+
+# Perform sentiment analysis to find emotion words
+emotion_words <- words %>%
+  inner_join(get_sentiments("afinn"), by = "word") %>%
+  distinct(word, .keep_all = TRUE)
+
+# Create dataframes for each category
+food_df <- as.data.frame(food_mentions)
+animals_df <- as.data.frame(animal_mentions)
+colors_df <- as.data.frame(color_mentions)
+events_df <- as.data.frame(event_mentions)
+sounds_df <- as.data.frame(sound_mentions)
+emotions_df <- as.data.frame(emotion_words)
+
+# Create a new Excel workbook
+wb <- createWorkbook()
+
+# Add sheets for each category
+addWorksheet(wb, "Food")
+addWorksheet(wb, "Animals")
+addWorksheet(wb, "Colors")
+addWorksheet(wb, "Events")
+addWorksheet(wb, "Sounds")
+addWorksheet(wb, "Emotions")
+
+# Write dataframes to Excel sheets
+writeData(wb, "Food", food_df)
+writeData(wb, "Animals", animals_df)
+writeData(wb, "Colors", colors_df)
+writeData(wb, "Events", events_df)
+writeData(wb, "Sounds", sounds_df)
+writeData(wb, "Emotions", emotions_df)
+
+# Save the workbook
+saveWorkbook(wb, file = "/Users/ScarlettMoldovan3/Desktop/anna_karenina_analysis.xlsx")
+```
+```{r}
+# Load required packages
+library(tidyverse)
+library(tidytext)
+library(openxlsx)
+library(ggplot2)
+
+# Load "Anna Karenina"
+anna_karenina <- readLines("/Users/ScarlettMoldovan3/Desktop/anna.karenina.txt")
+
+# Remove any incomplete final line
+anna_karenina <- anna_karenina[-length(anna_karenina)]
+
+# Convert to a dataframe
+anna_karenina_df <- tibble(text = anna_karenina)
+
+# Tokenize the text into words
+words <- anna_karenina_df %>%
+  unnest_tokens(word, text)
+
+# List of food items
+foods <- c("bread", "meat", "potato", "soup", "fish")
+
+# Find occurrences of food
+food_mentions <- words %>%
+  filter(word %in% foods) %>%
+  count(word) %>%
+  arrange(desc(n))
+
+# Create a bar plot for food mentions
+food_plot <- ggplot(food_mentions, aes(x = word, y = n)) +
+  geom_bar(stat = "identity", fill = "skyblue") +
+  labs(title = "Food Mentions", x = "Food", y = "Frequency") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# List of animals
+animals <- c("horse", "dog", "cat", "cow", "sheep")
+
+# Find occurrences of animals
+animal_mentions <- words %>%
+  filter(word %in% animals) %>%
+  count(word) %>%
+  arrange(desc(n))
+
+# Create a bar plot for animal mentions
+animal_plot <- ggplot(animal_mentions, aes(x = word, y = n)) +
+  geom_bar(stat = "identity", fill = "lightgreen") +
+  labs(title = "Animal Mentions", x = "Animal", y = "Frequency") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# Create a new Excel workbook
+wb <- createWorkbook()
+
+# Add sheets for food and animals
+addWorksheet(wb, "Food")
+addWorksheet(wb, "Animals")
+
+# Write dataframes to Excel sheets
+writeData(wb, "Food", food_mentions)
+writeData(wb, "Animals", animal_mentions)
+
+# Embed plots in Excel sheets
+addPlot(wb, sheet = "Food", x = 1, y = 4, width = 7, height = 5, plot = food_plot)
+addPlot(wb, sheet = "Animals", x = 1, y = 4, width = 7, height = 5, plot = animal_plot)
+
+# Save the workbook
+saveWorkbook(wb, file = "/Users/ScarlettMoldovan3/Desktop/anna_karenina_analysis.xlsx")
+```
+```{r}
+# Load required packages
+library(tidyverse)
+library(tidytext)
+library(openxlsx)
+library(ggplot2)
+
+# Load "Anna Karenina"
+anna_karenina <- readLines("/Users/ScarlettMoldovan3/Desktop/anna.karenina.txt")
+
+# Remove any incomplete final line
+anna_karenina <- anna_karenina[-length(anna_karenina)]
+
+# Convert to a dataframe
+anna_karenina_df <- tibble(text = anna_karenina)
+
+# Tokenize the text into words
+words <- anna_karenina_df %>%
+  unnest_tokens(word, text)
+
+# List of food items
+foods <- c("bread", "meat", "potato", "soup", "fish")
+
+# Find occurrences of food
+food_mentions <- words %>%
+  filter(word %in% foods) %>%
+  count(word) %>%
+  arrange(desc(n))
+
+# Create a bar plot for food mentions
+food_plot <- ggplot(food_mentions, aes(x = word, y = n)) +
+  geom_bar(stat = "identity", fill = "skyblue") +
+  labs(title = "Food Mentions", x = "Food", y = "Frequency") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# List of animals
+animals <- c("horse", "dog", "cat", "cow", "sheep")
+
+# Find occurrences of animals
+animal_mentions <- words %>%
+  filter(word %in% animals) %>%
+  count(word) %>%
+  arrange(desc(n))
+
+# Create a bar plot for animal mentions
+animal_plot <- ggplot(animal_mentions, aes(x = word, y = n)) +
+  geom_bar(stat = "identity", fill = "lightgreen") +
+  labs(title = "Animal Mentions", x = "Animal", y = "Frequency") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# Create a new Excel workbook
+wb <- createWorkbook()
+
+# Add sheets for food and animals
+addWorksheet(wb, "Food")
+addWorksheet(wb, "Animals")
+
+# Write dataframes to Excel sheets
+writeData(wb, "Food", food_mentions)
+writeData(wb, "Animals", animal_mentions)
+
+# Embed plots in Excel sheets
+addPlot(wb, sheet = "Food", x = 1, y = 4, width = 7, height = 5, plot = food_plot)
+addPlot(wb, sheet = "Animals", x = 1, y = 4, width = 7, height = 5, plot = animal_plot)
+
+# Save the workbook
+saveWorkbook(wb, file = "/Users/ScarlettMoldovan3/Desktop/anna_karenina_analysis.xlsx")
+```
+```{r}
+# Load required packages
+library(tidyverse)
+library(tidytext)
+library(openxlsx)
+library(ggplot2)
+
+# Load "Anna Karenina"
+anna_karenina <- readLines("/Users/ScarlettMoldovan3/Desktop/anna.karenina.txt")
+
+# Remove any incomplete final line
+anna_karenina <- anna_karenina[-length(anna_karenina)]
+
+# Convert to a dataframe
+anna_karenina_df <- tibble(text = anna_karenina)
+
+# Tokenize the text into words
+words <- anna_karenina_df %>%
+  unnest_tokens(word, text)
+
+# List of food items
+foods <- c("bread", "meat", "potato", "soup", "fish")
+
+# Find occurrences of food
+food_mentions <- words %>%
+  filter(word %in% foods) %>%
+  count(word) %>%
+  arrange(desc(n))
+
+# Create a bar plot for food mentions
+food_plot <- ggplot(food_mentions, aes(x = word, y = n)) +
+  geom_bar(stat = "identity", fill = "skyblue") +
+  labs(title = "Food Mentions", x = "Food", y = "Frequency") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# List of animals
+animals <- c("horse", "dog", "cat", "cow", "sheep")
+
+# Find occurrences of animals
+animal_mentions <- words %>%
+  filter(word %in% animals) %>%
+  count(word) %>%
+  arrange(desc(n))
+
+# Create a bar plot for animal mentions
+animal_plot <- ggplot(animal_mentions, aes(x = word, y = n)) +
+  geom_bar(stat = "identity", fill = "lightgreen") +
+  labs(title = "Animal Mentions", x = "Animal", y = "Frequency") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# Create a new Excel workbook
+wb <- createWorkbook()
+
+# Add sheets for food and animals
+addWorksheet(wb, "Food")
+addWorksheet(wb, "Animals")
+
+# Write dataframes to Excel sheets
+writeData(wb, "Food", food_mentions)
+writeData(wb, "Animals", animal_mentions)
+
+# Insert plots into Excel sheets
+drawPlot(wb, sheet = "Food", x = 1, y = 4, width = 7, height = 5, plot = food_plot)
+drawPlot(wb, sheet = "Animals", x = 1, y = 4, width = 7, height = 5, plot = animal_plot)
+
+# Save the workbook
+saveWorkbook(wb, file = "/Users/ScarlettMoldovan3/Desktop/anna_karenina_analysis.xlsx")
+```
+```{r}
+# Load required packages
+library(tidyverse)
+library(tidytext)
+library(ggplot2)
+library(openxlsx)
+
+# Load "Anna Karenina"
+anna_karenina <- readLines("/Users/ScarlettMoldovan3/Desktop/anna.karenina.txt")
+
+# Remove any incomplete final line
+anna_karenina <- anna_karenina[-length(anna_karenina)]
+
+# Convert to a dataframe
+anna_karenina_df <- tibble(text = anna_karenina)
+
+# Tokenize the text into words
+words <- anna_karenina_df %>%
+  unnest_tokens(word, text)
+
+# List of food items
+foods <- c("bread", "meat", "potato", "soup", "fish")
+
+# Find occurrences of food
+food_mentions <- words %>%
+  filter(word %in% foods) %>%
+  count(word) %>%
+  arrange(desc(n))
+
+# Create a bar plot for food mentions
+food_plot <- ggplot(food_mentions, aes(x = word, y = n)) +
+  geom_bar(stat = "identity", fill = "skyblue") +
+  labs(title = "Food Mentions", x = "Food", y = "Frequency") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# Save the food plot as an image file
+food_plot_path <- "/Users/ScarlettMoldovan3/Desktop/food_plot.png"
+ggsave(food_plot_path, plot = food_plot, device = "png")
+
+# List of animals
+animals <- c("horse", "dog", "cat", "cow", "sheep")
+
+# Find occurrences of animals
+animal_mentions <- words %>%
+  filter(word %in% animals) %>%
+  count(word) %>%
+  arrange(desc(n))
+
+# Create a bar plot for animal mentions
+animal_plot <- ggplot(animal_mentions, aes(x = word, y = n)) +
+  geom_bar(stat = "identity", fill = "lightgreen") +
+  labs(title = "Animal Mentions", x = "Animal", y = "Frequency") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# Save the animal plot as an image file
+animal_plot_path <- "/Users/ScarlettMoldovan3/Desktop/animal_plot.png"
+ggsave(animal_plot_path, plot = animal_plot, device = "png")
+
+# Create a new Excel workbook
+wb <- createWorkbook()
+
+# Add sheets for food and animals
+addWorksheet(wb, "Food")
+addWorksheet(wb, "Animals")
+
+# Insert images into Excel sheets
+insertImage(wb, sheet = "Food", filename = food_plot_path, width = 7, height = 5, startRow = 1, startCol = 1)
+insertImage(wb, sheet = "Animals", filename = animal_plot_path, width = 7, height = 5, startRow = 1, startCol = 1)
+
+# Save the workbook
+saveWorkbook(wb, file = "/Users/ScarlettMoldovan3/Desktop/anna_karenina_analysis.xlsx")
+```
+```{r}
+# Load required packages
+library(tidyverse)
+library(tidytext)
+library(ggplot2)
+library(openxlsx)
+
+# Load "Anna Karenina"
+anna_karenina <- readLines("/Users/ScarlettMoldovan3/Desktop/anna.karenina.txt")
+
+# Remove any incomplete final line
+anna_karenina <- anna_karenina[-length(anna_karenina)]
+
+# Convert to a dataframe
+anna_karenina_df <- tibble(text = anna_karenina)
+
+# Tokenize the text into words
+words <- anna_karenina_df %>%
+  unnest_tokens(word, text)
+
+# List of food items
+foods <- c("bread", "meat", "potato", "soup", "fish")
+
+# Find occurrences of food
+food_mentions <- words %>%
+  filter(word %in% foods) %>%
+  count(word) %>%
+  arrange(desc(n))
+
+# Create a bar plot for food mentions
+food_plot <- ggplot(food_mentions, aes(x = word, y = n)) +
+  geom_bar(stat = "identity", fill = "skyblue") +
+  labs(title = "Food Mentions", x = "Food", y = "Frequency") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# Save the food plot as an image file
+food_plot_path <- "/Users/ScarlettMoldovan3/Desktop/food_plot.png"
+ggsave(food_plot_path, plot = food_plot, device = "png")
+
+# List of animals
+animals <- c("horse", "dog", "cat", "cow", "sheep")
+
+# Find occurrences of animals
+animal_mentions <- words %>%
+  filter(word %in% animals) %>%
+  count(word) %>%
+  arrange(desc(n))
+
+# Create a bar plot for animal mentions
+animal_plot <- ggplot(animal_mentions, aes(x = word, y = n)) +
+  geom_bar(stat = "identity", fill = "lightgreen") +
+  labs(title = "Animal Mentions", x = "Animal", y = "Frequency") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# Save the animal plot as an image file
+animal_plot_path <- "/Users/ScarlettMoldovan3/Desktop/animal_plot.png"
+ggsave(animal_plot_path, plot = animal_plot, device = "png")
+
+# Create a new Excel workbook
+wb <- createWorkbook()
+
+# Add sheets for food and animals
+addWorksheet(wb, "Food")
+addWorksheet(wb, "Animals")
+
+# Insert images into Excel sheets
+addImage(image = food_plot_path, name = "Food", sheet = "Food", width = 7, height = 5, rows = 1, cols = 1)
+addImage(image = animal_plot_path, name = "Animal", sheet = "Animals", width = 7, height = 5, rows = 1, cols = 1)
+
+# Save the workbook
+saveWorkbook(wb, file = "/Users/ScarlettMoldovan3/Desktop/anna_karenina_analysis.xlsx")
+```
+```{r}
+# Load required packages
+library(tidyverse)
+library(tidytext)
+library(openxlsx)
+library(ggplot2)
+
+# Load "Anna Karenina"
+anna_karenina <- readLines("/Users/ScarlettMoldovan3/Desktop/anna.karenina.txt")
+
+# Remove any incomplete final line
+anna_karenina <- anna_karenina[-length(anna_karenina)]
+
+# Convert to a dataframe
+anna_karenina_df <- tibble(text = anna_karenina)
+
+# Tokenize the text into words
+words <- anna_karenina_df %>%
+  unnest_tokens(word, text)
+
+# List of food items
+foods <- c("bread", "meat", "potato", "soup", "fish", "coffee", "roll", "butter", "oyster", "beef", 
+           "wine", "vodka", "cheese", "water", "veal", "custard", "tart", "milk", "tea", "cherries", "cream")
+
+# Find occurrences of food
+food_mentions <- words %>%
+  filter(word %in% foods) %>%
+  count(word) %>%
+  arrange(desc(n))
+
+# Create a histogram for food mentions
+food_histogram <- ggplot(food_mentions, aes(x = word, y = n)) +
+  geom_bar(stat = "identity", fill = "skyblue") +
+  labs(title = "Food Mentions", x = "Food", y = "Frequency") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# List of animals
+animals <- c("horse", "dog", "cat", "cow", "sheep")
+
+# Find occurrences of animals
+animal_mentions <- words %>%
+  filter(word %in% animals) %>%
+  count(word) %>%
+  arrange(desc(n))
+
+# Create a histogram for animal mentions
+animal_histogram <- ggplot(animal_mentions, aes(x = word, y = n)) +
+  geom_bar(stat = "identity", fill = "lightgreen") +
+  labs(title = "Animal Mentions", x = "Animal", y = "Frequency") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# List of events
+events <- c("ball", "party", "marriage", "death", "race")
+
+# Find occurrences of events
+event_mentions <- words %>%
+  filter(word %in% events) %>%
+  count(word) %>%
+  arrange(desc(n))
+
+# Create a histogram for event mentions
+event_histogram <- ggplot(event_mentions, aes(x = word, y = n)) +
+  geom_bar(stat = "identity", fill = "lightcoral") +
+  labs(title = "Event Mentions", x = "Event", y = "Frequency") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# List of sounds
+sounds <- c("bell", "thunder", "whisper", "cry", "laugh")
+
+# Find occurrences of sounds
+sound_mentions <- words %>%
+  filter(word %in% sounds) %>%
+  count(word) %>%
+  arrange(desc(n))
+
+# Create a histogram for sound mentions
+sound_histogram <- ggplot(sound_mentions, aes(x = word, y = n)) +
+  geom_bar(stat = "identity", fill = "lightpink") +
+  labs(title = "Sound Mentions", x = "Sound", y = "Frequency") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# List of colors
+colors <- c("red", "blue", "green", "yellow", "purple", "black", "lilac")
+
+# Find occurrences of colors
+color_mentions <- words %>%
+  filter(word %in% colors) %>%
+  count(word) %>%
+  arrange(desc(n))
+
+# Create a histogram for color mentions
+color_histogram <- ggplot(color_mentions, aes(x = word, y = n)) +
+  geom_bar(stat = "identity", fill = "lightblue") +
+  labs(title = "Color Mentions", x = "Color", y = "Frequency") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# Create a new Excel workbook
+wb <- createWorkbook()
+
+# Add sheets for each category
+addWorksheet(wb, "Food")
+addWorksheet(wb, "Animals")
+addWorksheet(wb, "Events")
+addWorksheet(wb, "Sounds")
+addWorksheet(wb, "Colors")
+
+# Write dataframes to Excel sheets
+writeData(wb, "Food", food_mentions)
+writeData(wb, "Animals", animal_mentions)
+writeData(wb, "Events", event_mentions)
+writeData(wb, "Sounds", sound_mentions)
+writeData(wb, "Colors", color_mentions)
+
+# Save the histograms as images
+food_histogram_path <- "/Users/ScarlettMoldovan3/Desktop/food_histogram2.png"
+ggsave(food_histogram_path, plot = food_histogram, device = "png", width = 7, height = 5)
+
+animal_histogram_path <- "/Users/ScarlettMoldovan3/Desktop/animal_histogram2.png"
+ggsave(animal_histogram_path, plot = animal_histogram, device = "png", width = 7, height = 5)
+
+event_histogram_path <- "/Users/ScarlettMoldovan3/Desktop/event_histogram2.png"
+ggsave(event_histogram_path, plot = event_histogram, device = "png", width = 7, height = 5)
+
+sound_histogram_path <- "/Users/ScarlettMoldovan3/Desktop/sound_histogram2.png"
+ggsave(sound_histogram_path, plot = sound_histogram, device = "png", width = 7, height = 5)
+
+color_histogram_path <- "/Users/ScarlettMoldovan3/Desktop/color_histogram2.png"
+ggsave(color_histogram_path, plot = color_histogram, device = "png", width = 7, height = 5)
+
+# Save the workbook
+saveWorkbook(wb, file = "/Users/ScarlettMoldovan3/Desktop/anna_karenina_analysis3.xlsx")
+```
+```{r}
+# Load required packages
+library(tidyverse)
+library(tidytext)
+library(openxlsx)
+library(ggplot2)
+
+# Load "Anna Karenina"
+anna_karenina <- readLines("/Users/ScarlettMoldovan3/Desktop/anna.karenina.txt")
+
+# Remove any incomplete final line
+anna_karenina <- anna_karenina[-length(anna_karenina)]
+
+# Convert to a dataframe
+anna_karenina_df <- tibble(text = anna_karenina)
+
+# Tokenize the text into words
+words <- anna_karenina_df %>%
+  unnest_tokens(word, text)
+
+# Perform sentiment analysis
+sentiments <- get_sentiments("afinn")
+
+# Remove stopwords
+data("stop_words")
+words <- anti_join(words, stop_words)
+
+# Join the words with the sentiment data
+word_sentiments <- words %>%
+  inner_join(sentiments)
+
+# Count the sentiment score for each word
+sentiment_counts <- word_sentiments %>%
+  count(word, sentiment) %>%
+  spread(sentiment, n, fill = 0)
+
+# Calculate overall sentiment score for each word
+sentiment_counts <- sentiment_counts %>%
+  mutate(sentiment_score = positive - negative)
+
+# Plot the sentiment score distribution
+sentiment_plot <- ggplot(sentiment_counts, aes(x = sentiment_score)) +
+  geom_histogram(binwidth = 1, fill = "lightblue") +
+  labs(title = "Sentiment Score Distribution", x = "Sentiment Score", y = "Frequency")
+
+# Save the sentiment plot as an image file
+sentiment_plot_path <- "/Users/ScarlettMoldovan3/Desktop/sentiment_plot.png"
+ggsave(sentiment_plot_path, plot = sentiment_plot, device = "png", width = 7, height = 5)
+
+# Create a new Excel workbook
+wb <- createWorkbook()
+
+# Add a sheet for the sentiment plot
+addWorksheet(wb, "Sentiment Plot")
+
+# Insert the sentiment plot image into the Excel sheet
+addImage(image = sentiment_plot_path, name = "Sentiment Plot", sheet = "Sentiment Plot", width = 7, height = 5, rows = 1, cols = 1)
+
+# Save the workbook
+saveWorkbook(wb, file = "/Users/ScarlettMoldovan3/Desktop/anna_karenina_analysis.xlsx")
+```
+```{r}
+# Load required packages
+library(tidyverse)
+library(tidytext)
+library(openxlsx)
+library(ggplot2)
+
+# Load "Anna Karenina"
+anna_karenina <- readLines("/Users/ScarlettMoldovan3/Desktop/anna.karenina.txt")
+
+# Remove any incomplete final line
+anna_karenina <- anna_karenina[-length(anna_karenina)]
+
+# Convert to a dataframe
+anna_karenina_df <- tibble(text = anna_karenina)
+
+# Tokenize the text into words
+words <- anna_karenina_df %>%
+  unnest_tokens(word, text)
+
+# Perform sentiment analysis
+sentiments <- get_sentiments("afinn")
+
+# Remove stopwords
+data("stop_words")
+words <- anti_join(words, stop_words)
+
+# Join the words with the sentiment data
+word_sentiments <- words %>%
+  inner_join(sentiments)
+
+# Calculate sentiment score for each word
+sentiment_scores <- word_sentiments %>%
+  group_by(word) %>%
+  summarize(sentiment_score = sum(value))
+
+# Plot the sentiment score distribution
+sentiment_plot <- ggplot(sentiment_scores, aes(x = sentiment_score)) +
+  geom_histogram(binwidth = 1, fill = "lightblue") +
+  labs(title = "Sentiment Score Distribution", x = "Sentiment Score", y = "Frequency")
+
+# Save the sentiment plot as an image file
+sentiment_plot_path <- "/Users/ScarlettMoldovan3/Desktop/sentiment_plot.png"
+ggsave(sentiment_plot_path, plot = sentiment_plot, device = "png", width = 7, height = 5)
+
+# Create a new Excel workbook
+wb <- createWorkbook()
+
+# Add a sheet for the sentiment plot
+addWorksheet(wb, "Sentiment Plot")
+
+# Insert the sentiment plot image into the Excel sheet
+addImage(image = sentiment_plot_path, name = "Sentiment Plot", sheet = "Sentiment Plot", width = 7, height = 5, rows = 1, cols = 1)
+
+# Save the workbook
+saveWorkbook(wb, file = "/Users/ScarlettMoldovan3/Desktop/anna_karenina_analysis.xlsx")
+```
+```{r}
+# Load required packages
+library(tidyverse)
+library(tidytext)
+library(openxlsx)
+library(ggplot2)
+
+# Load "Anna Karenina"
+anna_karenina <- readLines("/Users/ScarlettMoldovan3/Desktop/anna.karenina.txt")
+
+# Remove any incomplete final line
+anna_karenina <- anna_karenina[-length(anna_karenina)]
+
+# Convert to a dataframe
+anna_karenina_df <- tibble(text = anna_karenina)
+
+# Tokenize the text into words
+words <- anna_karenina_df %>%
+  unnest_tokens(word, text)
+
+# Perform sentiment analysis
+sentiments <- get_sentiments("afinn")
+
+# Remove stopwords
+data("stop_words")
+words <- anti_join(words, stop_words)
+
+# Join the words with the sentiment data
+word_sentiments <- words %>%
+  inner_join(sentiments)
+
+# Calculate sentiment score for each word
+sentiment_scores <- word_sentiments %>%
+  group_by(word) %>%
+  summarize(sentiment_score = sum(value))
+
+# Plot the sentiment score distribution
+sentiment_plot <- ggplot(sentiment_scores, aes(x = sentiment_score)) +
+  geom_histogram(binwidth = 1, fill = "lightblue") +
+  labs(title = "Sentiment Score Distribution", x = "Sentiment Score", y = "Frequency")
+
+# Save the sentiment plot as a PNG image
+sentiment_plot_path <- "/Users/ScarlettMoldovan3/Desktop/sentiment_plot.png"
+ggsave(filename = sentiment_plot_path, plot = sentiment_plot, device = "png", width = 7, height = 5)
+
+# Create a new Excel workbook
+wb <- createWorkbook()
+
+# Add a sheet for the sentiment plot
+addWorksheet(wb, "Sentiment Plot")
+
+# Write the path to the sentiment plot image into the Excel sheet
+writeData(wb, "Sentiment Plot", sentiment_plot_path)
+
+# Save the workbook
+saveWorkbook(wb, file = "/Users/ScarlettMoldovan3/Desktop/anna_karenina_textanalysis.xlsx")
+```
+```{r}
+# Load required packages
+library(tidyverse)
+library(tidytext)
+library(openxlsx)
+library(ggplot2)
+
+# Load "Anna Karenina"
+anna_karenina <- readLines("/Users/ScarlettMoldovan3/Desktop/anna.karenina.txt")
+
+# Remove any incomplete final line
+anna_karenina <- anna_karenina[-length(anna_karenina)]
+
+# Convert to a dataframe
+anna_karenina_df <- tibble(text = anna_karenina)
+
+# Tokenize the text into words
+words <- anna_karenina_df %>%
+  unnest_tokens(word, text)
+
+# Perform sentiment analysis
+sentiments <- get_sentiments("afinn")
+
+# Remove stopwords
+data("stop_words")
+words <- anti_join(words, stop_words)
+
+# Join the words with the sentiment data
+word_sentiments <- words %>%
+  inner_join(sentiments)
+
+# Calculate sentiment score for each word
+sentiment_scores <- word_sentiments %>%
+  group_by(word) %>%
+  summarize(sentiment_score = sum(value))
+
+# Plot the sentiment score distribution
+sentiment_plot <- ggplot(sentiment_scores, aes(x = sentiment_score)) +
+  geom_histogram(binwidth = 1, fill = "lightblue") +
+  labs(title = "Sentiment Score Distribution", x = "Sentiment Score", y = "Frequency")
+
+# Save the sentiment plot as a PNG image
+sentiment_plot_path <- "/Users/ScarlettMoldovan3/Desktop/sentiment_plot.png"
+ggsave(filename = sentiment_plot_path, plot = sentiment_plot, device = "png", width = 7, height = 5)
+
+# Create a new Excel workbook
+wb <- createWorkbook()
+
+# Add a sheet for the sentiment plot
+addWorksheet(wb, "Sentiment Plot")
+
+# Write the path to the sentiment plot image into the Excel sheet
+writeData(wb, "Sentiment Plot", sentiment_plot_path)
+
+# Perform emotion analysis (example: using NRC lexicon)
+emotions <- get_sentiments("nrc")
+
+# Join the words with the emotion data
+word_emotions <- words %>%
+  inner_join(emotions)
+
+# Count the number of occurrences of each emotion
+emotion_counts <- word_emotions %>%
+  count(word, sentiment) %>%
+  spread(sentiment, n, fill = 0)
+
+# Add emotion analysis results to the Excel file
+addWorksheet(wb, "Emotion Analysis")
+writeData(wb, "Emotion Analysis", emotion_counts)
+
+# Save the workbook
+saveWorkbook(wb, file = "/Users/ScarlettMoldovan3/Desktop/anna_karenina_analysis45.xlsx")
+```
+```{r}
+# Save the sentiment plot as a PNG image to the desktop
+sentiment_plot_path <- "/Users/ScarlettMoldovan3/Desktop/sentiment_plot.png"
+ggsave(filename = sentiment_plot_path, plot = sentiment_plot, device = "png", width = 7, height = 5)
+
+# Create a new Excel workbook
+wb <- createWorkbook()
+
+# Add a sheet for the sentiment plot
+addWorksheet(wb, "Sentiment Plot")
+
+# Add the sentiment plot image path to the Excel file
+writeData(wb, "Sentiment Plot", sentiment_plot_path)
+
+# Perform emotion analysis (example: using NRC lexicon)
+emotions <- get_sentiments("nrc")
+
+# Join the words with the emotion data
+word_emotions <- words %>%
+  inner_join(emotions)
+
+# Count the number of occurrences of each emotion
+emotion_counts <- word_emotions %>%
+  count(word, sentiment) %>%
+  spread(sentiment, n, fill = 0)
+
+# Add emotion analysis results to the Excel file
+addWorksheet(wb, "Emotion Analysis")
+writeData(wb, "Emotion Analysis", emotion_counts)
+
+# Save the workbook
+saveWorkbook(wb, file = "/Users/ScarlettMoldovan3/Desktop/anna_karenina_analysis645.xlsx")
+```
+```{r}
+# Load required packages
+library(tidyverse)
+library(tidytext)
+library(ggplot2)
+
+# Load "Anna Karenina"
+anna_karenina <- readLines("/Users/ScarlettMoldovan3/Desktop/anna.karenina.txt")
+
+# Remove any incomplete final line
+anna_karenina <- anna_karenina[-length(anna_karenina)]
+
+# Convert to a dataframe
+anna_karenina_df <- tibble(text = anna_karenina)
+
+# Tokenize the text into words
+words <- anna_karenina_df %>%
+  unnest_tokens(word, text)
+
+# Perform sentiment analysis
+sentiments <- get_sentiments("afinn")
+
+# Remove stopwords
+data("stop_words")
+words <- anti_join(words, stop_words)
+
+# Join the words with the sentiment data
+word_sentiments <- words %>%
+  inner_join(sentiments)
+
+# Calculate sentiment score for each word
+sentiment_scores <- word_sentiments %>%
+  group_by(word) %>%
+  summarize(sentiment_score = sum(value))
+
+# Plot the sentiment score distribution
+sentiment_plot <- ggplot(sentiment_scores, aes(x = sentiment_score)) +
+  geom_histogram(binwidth = 1, fill = "lightblue") +
+  labs(title = "Sentiment Score Distribution", x = "Sentiment Score", y = "Frequency")
+
+# Save the sentiment plot as a PNG image
+sentiment_plot_path <- "/Users/ScarlettMoldovan3/Desktop/sentiment_plot.png"
+ggsave(filename = sentiment_plot_path, plot = sentiment_plot, device = "png", width = 7, height = 5)
+```
+```{R}
+# Load required packages
+library(tidyverse)
+library(tidytext)
+library(wordcloud)
+
+# Load "Anna Karenina"
+anna_karenina <- readLines("/Users/ScarlettMoldovan3/Desktop/anna.karenina.txt")
+
+# Remove any incomplete final line
+anna_karenina <- anna_karenina[-length(anna_karenina)]
+
+# Convert to a dataframe
+anna_karenina_df <- tibble(text = anna_karenina)
+
+# Tokenize the text into words
+words <- anna_karenina_df %>%
+  unnest_tokens(word, text)
+
+# Perform emotion analysis (example: using NRC lexicon)
+emotions <- get_sentiments("nrc")
+
+# Join the words with the emotion data
+word_emotions <- words %>%
+  inner_join(emotions)
+
+# Filter out neutral sentiments
+word_emotions <- word_emotions %>%
+  filter(sentiment != "neutral")
+
+# Count the occurrences of each emotion word
+emotion_counts <- word_emotions %>%
+  count(word)
+
+# Create a word cloud
+wordcloud(words = emotion_counts$word, freq = emotion_counts$n, scale = c(3, 0.5), max.words = 100, colors = brewer.pal(8, "Dark2"))
+
+# Save the word cloud as a PNG image
+wordcloud_path <- "/Users/ScarlettMoldovan3/Desktop/emotion_wordcloud.png"
+dev.copy(png, filename = wordcloud_path)
+dev.off()
+```
