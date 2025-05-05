@@ -1,64 +1,93 @@
-Anna Karenina: Tolstoy by the Numbers
+# Anna Karenina: Tolstoy by the Numbers
 
-This project explores Anna Karenina by Leo Tolstoy using computational text analysis in R. Through natural language processing (NLP) techniques, it investigates recurring themes, character mentions, emotional tones, settings, and other literary elements.
+This project uses computational text analysis to explore *Anna Karenina* by Leo Tolstoy. Using R, the analysis extracts patterns in themes, characters, emotions, and environmental imagery by applying natural language processing (NLP) techniques.
 
-Tools & Libraries Used
+## Overview
 
-tidyverse & tidytext – data wrangling and text mining
-ggplot2 – data visualization
-wordcloud, RColorBrewer – word cloud generation
-openxlsx – exporting analysis to Excel
-afinn, nrc – sentiment and emotion lexicons
+The goals of this project include:
 
-Dataset
+- Identifying frequent mentions of characters, colors, foods, settings, and animals
+- Performing sentiment and emotion analysis
+- Visualizing findings using bar plots, histograms, and word clouds
+- Exporting processed results to Excel for further exploration
 
-The analysis uses the full text of Anna Karenina, available as a .txt file.
+## Tools & Libraries
 
-Analysis Features
+The analysis was conducted using the following R libraries:
 
-Tokenization: Breaks the novel into individual words.
-Entity Extraction: Tracks mentions of:
-Characters (Anna, Vronsky, Kitty, Levin, etc.)
-Settings (Moscow, train station, etc.)
-Events (marriage, affair, death, etc.)
-Colors, sounds, food, and animals
-Sentiment Analysis:
-AFINN lexicon for numeric sentiment scoring
-NRC lexicon for emotion classification (e.g., joy, anger)
-Visualizations:
-Frequency bar charts for themes
-Sentiment histograms
-Word clouds for emotional tone
-Excel Export: Key datasets and plots exported to .xlsx for further exploration
+- [`tidyverse`](https://www.tidyverse.org/)
+- [`tidytext`](https://cran.r-project.org/web/packages/tidytext/index.html)
+- [`ggplot2`](https://ggplot2.tidyverse.org/)
+- [`wordcloud`](https://cran.r-project.org/web/packages/wordcloud/index.html)
+- [`openxlsx`](https://cran.r-project.org/web/packages/openxlsx/index.html)
+- `RColorBrewer`
+- `afinn` and `nrc` sentiment lexicons (via `get_sentiments()`)
 
-Example Visuals
+## Data
 
-You’ll find:
+- The dataset consists of the full text of *Anna Karenina* in `.txt` format.
+- Additional manually created lists for analysis:
+  - Character names (e.g., "Anna", "Levin", "Vronsky")
+  - Food and drink items (e.g., "bread", "wine", "soup")
+  - Animals (e.g., "horse", "dog", "cow")
+  - Colors (e.g., "red", "white", "black")
+  - Events (e.g., "ball", "marriage", "death")
+  - Sounds (e.g., "laugh", "whisper", "thunder")
+  - Settings (e.g., "Moscow", "country estate", "theater")
 
-Bar Charts of food, color, and sound mentions
-Histograms of sentiment score distribution
-Word Clouds based on NRC emotion words
+## Process
 
-Project Structure
+1. **Text Loading and Cleaning**  
+   - Load the `.txt` file  
+   - Convert text to a tidy tibble  
+   - Tokenize into words using `unnest_tokens()`  
+   - Remove stopwords and incomplete lines  
 
- anna-karenina-analysis/
-├── anna.karenina.txt              # Text of the novel
-├── anna_karenina_analysis.xlsx   # Compiled data outputs
-├── scripts/                      # All R scripts used
-├── visualizations/               # Exported PNGs of plots
-└── README.md                     # This file
-Takeaways
+2. **Keyword Frequency Analysis**  
+   - Count word occurrences in each predefined category  
+   - Generate bar plots for each thematic group  
 
-This project uses data to enhance close reading, revealing how literary tropes and emotional tones shift throughout Anna Karenina. It bridges literature and computation to show how stories can be interpreted through a data-driven lens.
+3. **Sentiment & Emotion Analysis**  
+   - Use the AFINN and NRC lexicons  
+   - Score and visualize sentiment values  
+   - Create emotion word clouds and export structured results
 
-To Run Locally
+4. **Data Export**  
+   - Create summary tables for each category  
+   - Export all data and charts to `.xlsx` files using `openxlsx`
 
-Clone this repo
-Open in RStudio
-Ensure required libraries are installed
-Run each .R or .Rmd script in order
+## Outputs
 
-Credits
+- Bar charts for mentions of food, animals, colors, events, sounds, and settings
+- Histograms of sentiment scores
+- Word cloud visualizations of emotion words
+- Excel workbooks with structured category data and embedded plots
 
-Text: Project Gutenberg
-Author: Scarlett Moldovan
+## File Structure
+
+```
+
+anna-karenina-analysis/
+├── anna.karenina.txt                # Source text
+├── anna\_karenina\_analysis.Rmd       # R Markdown analysis file
+├── visualizations/                  # Saved plot images (PNG)
+├── data\_exports/                    # Excel output files (.xlsx)
+└── README.md                        # Project documentation
+
+```
+
+## How to Use
+
+1. Clone or download this repository
+2. Open the `.Rmd` or `.R` script in RStudio
+3. Ensure `anna.karenina.txt` is in the working directory
+4. Install required libraries if necessary
+5. Run the scripts to reproduce analysis, generate charts, and export results
+
+## Credits
+
+- Text source: [Project Gutenberg – *Anna Karenina*](https://www.gutenberg.org/ebooks/1399)
+- Analysis and Visualization by: Scarlett Moldovan
+
+```
+
