@@ -63,17 +63,6 @@ The analysis was conducted using the following R libraries:
 - Word cloud visualizations of emotion words
 - Excel workbooks with structured category data and embedded plots
 
-## File Structure
-
-```
-
-anna-karenina-analysis/
-├── anna.karenina.txt                # Source text
-├── anna\_karenina\_analysis.Rmd       # R Markdown analysis file
-├── visualizations/                  # Saved plot images (PNG)
-├── data\_exports/                    # Excel output files (.xlsx)
-└── README.md                        # Project documentation
-
 ```
 
 ## How to Use
