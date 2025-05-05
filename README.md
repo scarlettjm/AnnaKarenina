@@ -63,7 +63,7 @@ The analysis was conducted using the following R libraries:
 - Word cloud visualizations of emotion words
 - Excel workbooks with structured category data and embedded plots
 
-```
+
 
 ## How to Use
 
@@ -78,5 +78,5 @@ The analysis was conducted using the following R libraries:
 - Text source: [Project Gutenberg – *Anna Karenina*](https://www.gutenberg.org/ebooks/1399)
 - Analysis and Visualization by: Scarlett Moldovan
 
-```
+
 
